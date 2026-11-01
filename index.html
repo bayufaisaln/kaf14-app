@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.svg">
+<title>Rekap Donasi KAF 14</title>
+<style>
+:root{--bg:#f3f6f5;--cd:#fff;--tx:#10231f;--mu:#6a7b77;--ac:#0f766e;--soft:#d9f0ec;--ln:#e3e9e7;--bad:#d1435b;--badsoft:#fbe4e8}
+@media(prefers-color-scheme:dark){:root{--bg:#0c1311;--cd:#15201d;--tx:#eaf2f0;--mu:#8da09b;--ac:#2dd4bf;--soft:#123630;--ln:#24332f;--bad:#fb7185;--badsoft:#3a1a22}}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+body{font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx);padding:calc(env(safe-area-inset-top) + 8px) 16px calc(84px + env(safe-area-inset-bottom));max-width:520px;margin:auto}
+h1{font-size:20px;font-weight:700;letter-spacing:-.01em}
+.sub{color:var(--mu);font-size:13px}
+header{padding:12px 2px 16px}
+.card{background:var(--cd);border-radius:20px;padding:18px;margin-bottom:12px}
+.big{font-size:32px;font-weight:700;letter-spacing:-.03em;line-height:1.1;margin:4px 0 12px}
+.bar{height:8px;background:var(--soft);border-radius:9px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ac);border-radius:9px}
+.row{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--mu);margin-top:8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.grid .card{margin:0;padding:14px 16px}
+.n{font-size:24px;font-weight:700;letter-spacing:-.02em}
+.n small{font-size:14px;color:var(--mu);font-weight:500}
+h2{font-size:14px;font-weight:600;margin-bottom:14px}
+.chart{display:flex;align-items:flex-end;gap:6px;height:120px}
+.chart div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:6px;font-size:10px;color:var(--mu)}
+.chart b{width:100%;background:var(--ac);border-radius:6px 6px 2px 2px;min-height:3px}
+.chart .fut b{background:var(--soft)}
+.chart .now{color:var(--tx);font-weight:700}
+.item{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--ln);cursor:pointer}
+.item:first-of-type{border-top:0}
+.item>div:first-child{flex:1;min-width:0}
+.item .nm{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dots{display:flex;gap:3px;margin-top:6px}
+.dots i{width:9px;height:9px;border-radius:50%;background:var(--ln)}
+.dots i.on{background:var(--ac)}
+.dots i.late{background:var(--bad)}
+.tag{font-size:12px;padding:3px 9px;border-radius:99px;background:var(--soft);color:var(--ac);font-weight:600;white-space:nowrap}
+.tag.bad{background:var(--badsoft);color:var(--bad)}
+.r{text-align:right;font-size:13px;color:var(--mu);white-space:nowrap}
+input,button{font:inherit;color:inherit}
+input{width:100%;padding:12px 14px;border-radius:14px;border:1px solid var(--ln);background:var(--cd);outline:none}
+input:focus{border-color:var(--ac)}
+.chips{display:flex;gap:8px;overflow-x:auto;margin:12px 0;padding-bottom:2px}
+.chip{padding:7px 14px;border-radius:99px;border:1px solid var(--ln);background:var(--cd);white-space:nowrap;font-size:13px}
+.chip.on{background:var(--ac);border-color:var(--ac);color:var(--bg);font-weight:600}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;gap:4px;padding:8px 16px calc(8px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px)}
+nav button{flex:1;max-width:160px;padding:10px;border:0;border-radius:14px;background:none;color:var(--mu);font-size:13px;font-weight:600}
+nav button.on{background:var(--soft);color:var(--ac)}
+.btn{width:100%;padding:14px;border:0;border-radius:14px;background:var(--ac);color:var(--bg);font-weight:700;margin-top:10px}
+.btn.g{background:var(--soft);color:var(--ac)}
+.fab{position:fixed;right:20px;bottom:calc(76px + env(safe-area-inset-bottom));width:52px;height:52px;border-radius:50%;border:0;background:var(--ac);color:var(--bg);font-size:28px;box-shadow:0 6px 18px #0004}
+.sheet{position:fixed;inset:0;background:#0007;display:none;align-items:flex-end;justify-content:center;z-index:5}
+.sheet.open{display:flex}
+.sheet>div{background:var(--cd);width:100%;max-width:520px;border-radius:26px 26px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));max-height:90vh;overflow:auto;animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:.4}}
+.months{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+.months button{padding:11px 0;border-radius:12px;border:1px solid var(--ln);background:none;font-size:13px}
+.months button.on{background:var(--ac);border-color:var(--ac);color:var(--bg);font-weight:700}
+.months button.late{border-color:var(--bad);color:var(--bad)}
+label{font-size:12px;color:var(--mu);display:block;margin:12px 0 6px}
+#toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 12px);transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 16px;border-radius:99px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:9;max-width:90%}
+#toast.s{opacity:1}
+.empty{text-align:center;color:var(--mu);padding:28px 0}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<header><h1>Kakak Asuh FORSALIM #14</h1><div class="sub" id="sub">Memuat…</div></header>
+<main id="app"></main>
+<button class="fab" id="fab" aria-label="Tambah donatur" style="display:none">+</button>
+<nav>
+<button data-t="dash" class="on">Dashboard</button>
+<button data-t="list">Donatur</button>
+<button data-t="set">Pengaturan</button>
+</nav>
+<div class="sheet" id="sheet"><div id="sbody"></div></div>
+<div id="toast"></div>
+
+<script>
+const M=['Jul','Agu','Sep','Okt','Nov','Des','Jan','Feb','Mar','Apr','Mei','Jun'];
+const $=s=>document.querySelector(s);
+const rp=n=>'Rp'+Math.round(n).toLocaleString('id-ID');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const START_Y=2026,START_M=6; // Juli 2026
+let D=[],sha=null,upd='',tab='dash',flt='all',q='',edit=-1,tmp=null;
+let cfg={};try{cfg=JSON.parse(localStorage.getItem('kaf14')||'{}')}catch(e){}
+const guess=()=>{const h=location.hostname;return h.endsWith('.github.io')?h.split('.')[0]+'/'+(location.pathname.split('/')[1]||''):''};
+if(!cfg.repo)cfg.repo=guess();
+const canEdit=()=>!!(cfg.token&&cfg.repo);
+
+// bulan berjalan: 0..11, -1 jika belum mulai
+const now=new Date();
+const cur=Math.max(-1,Math.min(11,(now.getFullYear()-START_Y)*12+now.getMonth()-START_M));
+const due=cur+1; // jumlah bulan yang sudah jatuh tempo
+
+const late=d=>[...d.p.slice(0,due)].filter(c=>c==='0').length;
+const paid=d=>[...d.p].filter(c=>c==='1').length;
+
+function stats(){
+  const s={commit:0,got:0,mp:Array(12).fill(0),mc:Array(12).fill(0),lunas:0,zero:0,tunggak:0,tunggakRp:0,nowPaid:0};
+  D.forEach(d=>{
+    s.commit+=d.a;
+    [...d.p].forEach((c,i)=>{if(c==='1'){s.got+=d.a;s.mp[i]+=d.a;s.mc[i]++}});
+    if(!d.p.includes('0'))s.lunas++;
+    if(!d.p.includes('1'))s.zero++;
+    const l=late(d);if(l){s.tunggak++;s.tunggakRp+=l*d.a}
+    if(cur>=0&&d.p[cur]==='1')s.nowPaid++;
+  });
+  s.target=s.commit*12;
+  return s;
+}
+
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('s');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('s'),2600)}
+
+/* ---------- GitHub sync ---------- */
+const api=()=>`https://api.github.com/repos/${cfg.repo}/contents/data.json`;
+async function gh(method,body){
+  const r=await fetch(api(),{method,headers:{Authorization:'Bearer '+cfg.token,Accept:'application/vnd.github+json'},body:body?JSON.stringify(body):undefined});
+  if(!r.ok)throw new Error(r.status===401?'Token tidak valid':r.status===404?'Repo/file tidak ditemukan':r.status===409||r.status===422?'Data sudah berubah, muat ulang':'Error '+r.status);
+  return r.json();
+}
+const dec=b=>JSON.parse(decodeURIComponent(escape(atob(b.replace(/\n/g,'')))));
+async function load(){
+  try{
+    let j;
+    if(canEdit()){const r=await gh('GET');sha=r.sha;j=dec(r.content)}
+    else{j=await (await fetch('data.json?'+Date.now())).json()}
+    D=j.donors;upd=j.updated;
+    localStorage.setItem('kaf14cache',JSON.stringify(j));
+  }catch(e){
+    toast('Gagal memuat: '+e.message);
+    try{const j=JSON.parse(localStorage.getItem('kaf14cache'));D=j.donors;upd=j.updated}catch(_){}
+  }
+  render();
+}
+async function save(msg){
+  const j={updated:new Date().toISOString(),donors:D};
+  const txt='{"updated":"'+j.updated+'","donors":[\n'+D.map(x=>JSON.stringify(x)).join(',\n')+'\n]}';
+  const r=await gh('PUT',{message:msg,content:btoa(unescape(encodeURIComponent(txt))),sha});
+  sha=r.content.sha;upd=j.updated;
+  localStorage.setItem('kaf14cache',JSON.stringify(j));
+}
+
+/* ---------- Views ---------- */
+function dash(){
+  const s=stats(),pct=s.target?s.got/s.target*100:0;
+  const dueTarget=s.commit*due,dueGot=D.reduce((a,d)=>a+[...d.p.slice(0,due)].filter(c=>c==='1').length*d.a,0);
+  const top=D.map((d,i)=>({d,i,l:late(d)})).filter(x=>x.l).sort((a,b)=>b.l*b.d.a-a.l*a.d.a).slice(0,5);
+  const mx=Math.max(...s.mp,s.commit);
+  return `
+  <div class="card"><div class="sub">Terkumpul</div><div class="big">${rp(s.got)}</div>
+    <div class="bar"><i style="width:${pct}%"></i></div>
+    <div class="row"><span>${pct.toFixed(1).replace('.',',')}% dari ${rp(s.target)}</span><span>Kurang ${rp(s.target-s.got)}</span></div></div>
+  <div class="grid">
+    <div class="card"><div class="sub">Lunas 12 bulan</div><div class="n">${s.lunas} <small>/ ${D.length}</small></div></div>
+    <div class="card"><div class="sub">${cur>=0?'Bayar bulan '+M[cur]:'Bayar bulan ini'}</div><div class="n">${s.nowPaid} <small>/ ${D.length}</small></div></div>
+    <div class="card"><div class="sub">Menunggak</div><div class="n" style="color:var(--bad)">${s.tunggak} <small>orang</small></div></div>
+    <div class="card"><div class="sub">Belum pernah bayar</div><div class="n">${s.zero} <small>orang</small></div></div>
+  </div>
+  <div class="card"><h2>Pemasukan per bulan</h2><div class="chart">
+    ${s.mp.map((v,i)=>`<div class="${i>cur?'fut':''} ${i===cur?'now':''}"><b style="height:${v/mx*88}%"></b>${M[i][0]}</div>`).join('')}
+  </div><div class="row"><span>Target ${rp(s.commit)}/bln</span><span>${cur>=0?M[cur]+': '+rp(s.mp[cur]):''}</span></div></div>
+  <div class="card"><h2>Tunggakan s.d. bulan berjalan</h2>
+    <div class="sub" style="margin:-8px 0 10px">${due?`${rp(dueTarget-dueGot)} dari target ${rp(dueTarget)} (${M[0]}–${M[cur]})`:'Program belum dimulai'}</div>
+    ${top.length?top.map(x=>`<div class="item" data-i="${x.i}"><div><div class="nm">${esc(x.d.n)}</div><div class="sub">${x.l} bulan × ${rp(x.d.a)}</div></div><span class="tag bad">${rp(x.l*x.d.a)}</span></div>`).join(''):'<div class="empty">Tidak ada tunggakan 🎉</div>'}
+  </div>`;
+}
+
+function list(){
+  const f=D.map((d,i)=>({d,i})).filter(({d})=>{
+    if(q&&!d.n.toLowerCase().includes(q))return false;
+    if(flt==='lunas')return !d.p.includes('0');
+    if(flt==='late')return late(d)>0;
+    if(flt==='zero')return !d.p.includes('1');
+    return true;
+  });
+  const fl=[['all','Semua'],['late','Menunggak'],['lunas','Lunas'],['zero','Belum bayar']];
+  return `<input id="q" type="search" placeholder="Cari nama…" value="${esc(q)}">
+  <div class="chips">${fl.map(([k,v])=>`<button class="chip ${flt===k?'on':''}" data-f="${k}">${v}</button>`).join('')}</div>
+  <div class="card" style="padding:6px 18px">${f.length?f.map(({d,i})=>{
+    const l=late(d),ok=!d.p.includes('0');
+    return `<div class="item" data-i="${i}"><div><div class="nm">${esc(d.n)}</div>
+      <div class="dots">${[...d.p].map((c,k)=>`<i class="${c==='1'?'on':k<due?'late':''}"></i>`).join('')}</div></div>
+      <div class="r">${ok?'<span class="tag">Lunas</span>':l?`<span class="tag bad">${l} bln</span>`:''}<div style="margin-top:4px">${rp(d.a)}</div></div></div>`}).join(''):'<div class="empty">Tidak ada data</div>'}</div>`;
+}
+
+function settings(){
+  return `<div class="card"><h2>Sinkronisasi GitHub</h2>
+  <div class="sub">Isi agar rekap bisa diubah dari HP. Tanpa token, aplikasi hanya bisa dilihat.</div>
+  <label>Repositori (pengguna/nama-repo)</label><input id="repo" value="${esc(cfg.repo||'')}" placeholder="username/kaf14" autocapitalize="off">
+  <label>Personal Access Token</label><input id="tok" type="password" value="${esc(cfg.token||'')}" placeholder="github_pat_…" autocapitalize="off">
+  <button class="btn" id="saveCfg">Simpan & muat ulang</button>
+  ${cfg.token?'<button class="btn g" id="out">Keluar (hapus token dari perangkat ini)</button>':''}</div>
+  <div class="card"><h2>Data</h2><div class="sub">Status: ${canEdit()?'Bisa edit':'Hanya lihat'}<br>Diperbarui: ${upd?new Date(upd).toLocaleString('id-ID'):'-'}</div>
+  <button class="btn g" id="dl">Unduh cadangan (CSV)</button></div>`;
+}
+
+function render(){
+  $('#sub').textContent=`Juli 2026 – Juni 2027${cur>=0?' · sekarang '+M[cur]:''}`;
+  $('#app').innerHTML=tab==='dash'?dash():tab==='list'?list():settings();
+  $('#fab').style.display=tab==='list'&&canEdit()?'block':'none';
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===tab));
+}
+
+/* ---------- Sheet edit ---------- */
+function openSheet(i){
+  edit=i;
+  tmp=i>=0?{...D[i]}:{n:'',a:50000,p:'0'.repeat(12)};
+  drawSheet();$('#sheet').classList.add('open');
+}
+function drawSheet(){
+  const ce=canEdit(),dis=ce?'':'disabled';
+  $('#sbody').innerHTML=`
+  <h1>${edit<0?'Donatur baru':esc(tmp.n)}</h1>
+  <div class="sub">${paid(tmp)} dari 12 bulan · ${rp(paid(tmp)*tmp.a)}</div>
+  ${edit<0?`<label>Nama</label><input id="en" placeholder="Nama lengkap">`:''}
+  <label>Donasi per bulan (Rp)</label><input id="ea" type="number" inputmode="numeric" value="${tmp.a}" ${dis}>
+  <label>Ketuk bulan untuk tandai sudah bayar</label>
+  <div class="months">${[...tmp.p].map((c,k)=>`<button data-k="${k}" class="${c==='1'?'on':k<due?'late':''}">${M[k]}</button>`).join('')}</div>
+  ${ce?`<button class="btn" id="sv">Simpan</button>`:'<div class="sub">Masukkan token di Pengaturan untuk mengedit.</div>'}
+  <button class="btn g" id="cl">Tutup</button>
+  ${ce&&edit>=0?'<button class="btn g" id="del" style="color:var(--bad)">Hapus donatur</button>':''}`;
+}
+const close=()=>$('#sheet').classList.remove('open');
+
+/* ---------- Events ---------- */
+document.addEventListener('click',async e=>{
+  const t=e.target,b=t.closest('button'),it=t.closest('.item');
+  if(t===$('#sheet'))return close();
+  if(b&&b.closest('nav')){tab=b.dataset.t;render();return scrollTo(0,0)}
+  if(b&&b.dataset.f){flt=b.dataset.f;render();return}
+  if(b&&b.id==='fab')return openSheet(-1);
+  if(b&&b.dataset.k!==undefined&&canEdit()){const k=+b.dataset.k,a=[...tmp.p];a[k]=a[k]==='1'?'0':'1';tmp.p=a.join('');const v=$('#ea')?.value,n=$('#en')?.value;drawSheet();if($('#ea'))$('#ea').value=v;if($('#en'))$('#en').value=n;return}
+  if(b&&b.id==='cl')return close();
+  if(b&&b.id==='sv'){
+    tmp.a=Math.max(0,+$('#ea').value||0);
+    if(edit<0){tmp.n=$('#en').value.trim();if(!tmp.n)return toast('Nama wajib diisi')}
+    const old=JSON.stringify(D);
+    if(edit<0)D.push(tmp);else D[edit]=tmp;
+    b.disabled=true;b.textContent='Menyimpan…';
+    try{await save((edit<0?'Tambah ':'Update ')+tmp.n);toast('Tersimpan ✓');close()}
+    catch(err){D=JSON.parse(old);toast(err.message);b.disabled=false;b.textContent='Simpan'}
+    return render();
+  }
+  if(b&&b.id==='del'){
+    if(!confirm('Hapus '+tmp.n+'?'))return;
+    const old=JSON.stringify(D);D.splice(edit,1);
+    try{await save('Hapus '+tmp.n);toast('Terhapus');close()}catch(err){D=JSON.parse(old);toast(err.message)}
+    return render();
+  }
+  if(b&&b.id==='saveCfg'){cfg.repo=$('#repo').value.trim();cfg.token=$('#tok').value.trim();localStorage.setItem('kaf14',JSON.stringify(cfg));toast('Memuat ulang…');return load()}
+  if(b&&b.id==='out'){delete cfg.token;localStorage.setItem('kaf14',JSON.stringify(cfg));sha=null;toast('Token dihapus');return load()}
+  if(b&&b.id==='dl'){
+    const h=['No','Nama','Donasi',...M,'Total'];
+    const csv=[h,...D.map((d,i)=>[i+1,'"'+d.n+'"',d.a,...[...d.p].map(c=>c==='1'?'TRUE':'FALSE'),paid(d)*d.a])].map(r=>r.join(',')).join('\n');
+    const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='rekap-kaf14.csv';a.click();return;
+  }
+  if(it&&it.dataset.i!==undefined)openSheet(+it.dataset.i);
+});
+document.addEventListener('input',e=>{if(e.target.id==='q'){q=e.target.value.toLowerCase();const p=e.target.selectionStart;render();const i=$('#q');i.focus();i.setSelectionRange(p,p)}});
+
+load();
+</script>
+</body>
+</html>
